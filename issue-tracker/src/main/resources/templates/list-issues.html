@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Issues</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        
+     	
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+        
+    </head>
+    <body>
+    
+    
+    
+
+	
+	
+	<div data-role="popup" id="modalAddIssue" data-theme="a" class="ui-corner-all">
+    <form action="/AddIssue">
+        <div style="padding:10px 20px;">
+            <h3>Please sign in</h3>
+            <label for="un" class="ui-hidden-accessible">Description:</label>
+            <input type="text" name="description" id="un" value="" placeholder="description" data-theme="a">
+            <label for="un" class="ui-hidden-accessible">Severity:</label>
+            <input type="text" name="severity" id="un" value="" placeholder="Severity" data-theme="a">
+            <label for="un" class="ui-hidden-accessible">Assignee:</label>
+            <input type="text" name="assignee" id="un" value="" placeholder="Assignee" data-theme="a">
+            <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">AddIssue</button>
+        </div>
+    </form>
+</div>
+	
+	
+    
+        <div th:switch="${issues}">
+            <h2 th:case="null">No issues yet!</h2>
+            <div th:case="*">
+                <h2>Issues</h2>
+                <p th:text="${msg}" ></p>
+          
+               <table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive">
+                    <thead>
+                    <tr>
+                        <th >Description</th>
+                        <th>Severity</th>
+                        <th>Assignee</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="issue : ${issues}">
+                        <td th:text="${issue.description}"></td>
+                        <td th:text="${issue.severity}"></td>
+                        <td th:text="${issue.assignee}"></td>
+                        <td><a th:href="@{/edit/{id}(id=${issue.id})}">Edit</a></td>
+                        <td><a th:href="@{/delete/{id}(id=${issue.id})}">Delete</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+              
+            </div>
+  
+
+	
+<a href="#modalAddIssue" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">Add a new issue</a>
+        </div>
+
+        
+    </body>
+</html>

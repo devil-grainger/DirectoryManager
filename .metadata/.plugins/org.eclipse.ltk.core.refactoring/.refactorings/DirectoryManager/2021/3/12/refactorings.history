@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Generalize declared type of &apos;oracle.java.erpsol.com.kube.directory.model.Addressbook.id&apos; to &apos;java.lang.Object&apos;&#x0D;&#x0A;- Original project: &apos;DirectoryManager&apos;&#x0D;&#x0A;- Original element: &apos;oracle.java.erpsol.com.kube.directory.model.Addressbook.id&apos;&#x0D;&#x0A;- Original type: &apos;java.lang.String&apos;&#x0D;&#x0A;- Refactored type: &apos;java.lang.Object&apos;" description="Generalize declared type" flags="786434" id="org.eclipse.jdt.ui.change.type" input="/src\/main\/java&lt;oracle.java.erpsol.com.kube.directory.model{Addressbook.java" selection="437 0" stamp="1615998708310" type="java.lang.Object" version="1.0"/>
+</session>

@@ -1,0 +1,220 @@
+pipeline {
+    agent any
+    
+    
+    triggers {
+        cron('H H(16-17) * * *')
+    }
+    
+	
+    stages {
+    
+	    stage('Init') {
+	            steps {
+	            script{
+					try{
+					    sh 'rm -rf /tmp/olds'
+					}catch(Exception e){
+					    
+					    echo 'el archivo temporal no existe .. continuar'
+					}
+						try{
+					    sh 'rm -rf /tmp/DirectoryManager'
+					}catch(Exception e){
+					    
+					    echo 'el archivo temporal no existe .. continuar'
+					}
+
+	                }
+
+
+	            }
+	        }
+      
+        stage('Clear') {
+            steps {
+                sh 'mv ${WORKSPACE}/DirectoryManager /tmp'
+                sh 'mkdir /tmp/olds'
+                sh 'mv ${WORKSPACE}/* /tmp/olds'
+                sh 'cp -r /tmp/DirectoryManager/* ${WORKSPACE}'
+                
+            }
+        }
+         stage('Update grant ') {
+            steps {
+                sh 'chmod 700 mvnw'
+            }
+            
+        }
+        stage('Build') {
+            steps {
+                sh '/var/lib/jenkins/jobs/DirectoryManager/workspace/mvnw package'
+              
+            }
+        }
+        stage('Whoami') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc whoami'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Remove old') {
+            steps {
+             	script{
+             	    try{
+             	      sh 'oc delete project directoryManager-dev'
+             	      sleep(10)
+             	    }catch(Exception e){
+             	        echo ' Proyecto no existe .. omitiendo resultado ...'
+             	        
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Create project') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc new-project directoryManager-dev'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Create a build config based on the Dockerfile.native') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'cat src/docker/Dockerfile | oc new-build --name management --strategy=docker --dockerfile -'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+      
+      stage('Build the project') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc start-build management --from-dir .'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Delay') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sleep(120)
+             	                                    
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Deploy the project to OpenShift') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc new-app --image-stream=management -n directoryManager-dev'
+             	                                    
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Publish project') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc expose svc/management -n directoryManager-dev'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        stage('Get URL of Service') {
+            steps {
+            
+         
+             	script{
+             	    try{
+             	      sh 'oc describe route management -n directoryManager-dev'
+             	    }catch(Exception e){
+             	        echo ' Exception'
+             	        return
+             	    }
+             	    
+             	}
+             
+            }
+            
+        }
+        
+        /*
+        stage('Build') {
+            steps {
+                sh '${WORKSPACE}/MsCreditCollectionManagement/mvnw clean package -Dquarkus.kubernetes.deploy=true -f ${WORKSPACE}/MsCreditCollectionManagement/pom.xml'
+              
+            }
+        }*/
+
+     }   
+}
