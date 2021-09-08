@@ -37,6 +37,7 @@ pipeline {
                 sh 'mkdir /tmp/oldsDir'
                 sh 'mv ${WORKSPACE}/* /tmp/oldsDir'
                 sh 'cp -r /tmp/DirectoryManager/* ${WORKSPACE}'
+                sh 'cp -r /tmp/DirectoryManager/.* ${WORKSPACE}'
                 
             }
         }
