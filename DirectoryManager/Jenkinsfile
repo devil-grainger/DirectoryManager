@@ -37,7 +37,8 @@ pipeline {
                 sh 'mkdir /tmp/oldsDir'
                 sh 'mv ${WORKSPACE}/* /tmp/oldsDir'
                 sh 'cp -r /tmp/DirectoryManager/* ${WORKSPACE}'
-                sh 'cp -r /tmp/DirectoryManager/.* ${WORKSPACE}'
+                sh 'cp -r /tmp/DirectoryManager/.mvn ${WORKSPACE}'
+                sh 'cp -r /tmp/DirectoryManager/.gitignore ${WORKSPACE}'
                 
             }
         }
