@@ -1,10 +1,10 @@
 pipeline {
     agent any
     
-    
+    /*
     triggers {
         cron('H H(16-17) * * *')
-    }
+    }*/
     
 	
     stages {
@@ -13,7 +13,7 @@ pipeline {
 	            steps {
 	            script{
 					try{
-					    sh 'rm -rf /tmp/olds'
+					    sh 'rm -rf /tmp/oldsDir'
 					}catch(Exception e){
 					    
 					    echo 'el archivo temporal no existe .. continuar'
@@ -34,8 +34,8 @@ pipeline {
         stage('Clear') {
             steps {
                 sh 'mv ${WORKSPACE}/DirectoryManager /tmp'
-                sh 'mkdir /tmp/olds'
-                sh 'mv ${WORKSPACE}/* /tmp/olds'
+                sh 'mkdir /tmp/oldsDir'
+                sh 'mv ${WORKSPACE}/* /tmp/oldsDir'
                 sh 'cp -r /tmp/DirectoryManager/* ${WORKSPACE}'
                 
             }
@@ -108,7 +108,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'cat src/docker/Dockerfile | oc new-build --name management --strategy=docker --dockerfile -'
+             	      sh 'cat src/docker/Dockerfile | oc new-build --name Dirmanagement --strategy=docker --dockerfile -'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -126,7 +126,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc start-build management --from-dir .'
+             	      sh 'oc start-build Dirmanagement --from-dir .'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -161,7 +161,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc new-app --image-stream=management -n directoryManager-dev'
+             	      sh 'oc new-app --image-stream=Dirmanagement -n directoryManager-dev'
              	                                    
              	    }catch(Exception e){
              	        echo ' Exception'
@@ -179,7 +179,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc expose svc/management -n directoryManager-dev'
+             	      sh 'oc expose svc/Dirmanagement -n directoryManager-dev'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -196,7 +196,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc describe route management -n directoryManager-dev'
+             	      sh 'oc describe route Dirmanagement -n directoryManager-dev'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
