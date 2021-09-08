@@ -76,7 +76,7 @@ pipeline {
              	script{
              	    try{
              	      sh 'oc delete project directorymanager-dev'
-             	      sleep(10)
+             	      sleep(15)
              	    }catch(Exception e){
              	        echo ' Proyecto no existe .. omitiendo resultado ...'
              	        
