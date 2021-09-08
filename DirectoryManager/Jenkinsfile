@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '/var/lib/jenkins/jobs/DirectoryManager/workspace/mvnw install'
+                sh '/var/lib/jenkins/jobs/DirectoryManager/workspace/mvnw build'
               
             }
         }
