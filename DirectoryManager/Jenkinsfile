@@ -75,7 +75,7 @@ pipeline {
             steps {
              	script{
              	    try{
-             	      sh 'oc delete project directoryManager-dev'
+             	      sh 'oc delete project directorymanager-dev'
              	      sleep(10)
              	    }catch(Exception e){
              	        echo ' Proyecto no existe .. omitiendo resultado ...'
@@ -93,7 +93,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc new-project directoryManager-dev'
+             	      sh 'oc new-project directorymanager-dev'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -110,7 +110,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'cat src/docker/Dockerfile | oc new-build --name Dirmanagement --strategy=docker --dockerfile -'
+             	      sh 'cat src/docker/Dockerfile | oc new-build --name directorymanager --strategy=docker --dockerfile -'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -128,7 +128,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc start-build Dirmanagement --from-dir .'
+             	      sh 'oc start-build directorymanager --from-dir .'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -163,7 +163,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc new-app --image-stream=Dirmanagement -n directoryManager-dev'
+             	      sh 'oc new-app --image-stream=directorymanager -n directorymanager-dev'
              	                                    
              	    }catch(Exception e){
              	        echo ' Exception'
@@ -181,7 +181,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc expose svc/Dirmanagement -n directoryManager-dev'
+             	      sh 'oc expose svc/directorymanager -n directorymanager-dev'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
@@ -198,7 +198,7 @@ pipeline {
          
              	script{
              	    try{
-             	      sh 'oc describe route Dirmanagement -n directoryManager-dev'
+             	      sh 'oc describe route directorymanager -n directorymanager-dev'
              	    }catch(Exception e){
              	        echo ' Exception'
              	        return
