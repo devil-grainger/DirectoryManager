@@ -23,12 +23,12 @@ RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
 
 
 
-ENV JAVA_OPTIONS="-javaagent:/deployments/lib/elastic-apm-agent-1.25.0.jar -Delastic.apm.service_name=my-cool-service -Delastic.apm.application_packages=com.conecel.claro.trans.creditcollect -Delastic.apm.server_url=http://10.0.12.51:8200"
+ENV JAVA_OPTIONS="-javaagent:/deployments/elastic-apm-agent-1.25.0.jar -Delastic.apm.service_name=my-cool-service -Delastic.apm.application_packages=com.conecel.claro.trans.creditcollect -Delastic.apm.server_url=http://10.0.12.51:8200"
 
 COPY --chown=1001 target/DirectoryManager-0.0.1-SNAPSHOT.jar /deployments/app.jar
 
 # add lib for APM SERVER
-# COPY --chown=1001 lib/elastic-apm-agent-1.25.0.jar /deployments/lib/
+ COPY --chown=1001 lib/elastic-apm-agent-1.25.0.jar /deployments/
 
 EXPOSE 8080
 USER 1001
