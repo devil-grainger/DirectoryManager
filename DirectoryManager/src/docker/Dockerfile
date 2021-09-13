@@ -35,6 +35,6 @@ USER 1001
 
 # ENTRYPOINT ["java","-jar","/deployments/app.jar"]
 
-ENTRYPOINT ["java","-javaagent:/deployments/elastic-apm-agent-1.25.0.jar","-Delastic.apm.service_name=my-cool-service","-Delastic.apm.application_packages=com.conecel.claro.trans.creditcollect","-Delastic.apm.server_url=http://3.140.64.198:8200","-jar","/deployments/app.jar"]
+ENTRYPOINT ["java","-javaagent:/deployments/elastic-apm-agent-1.25.0.jar","-Delastic.apm.service_name=my-cool-service","-Delastic.apm.application_packages=com.conecel.claro.trans.creditcollect","-Delastic.apm.server_url=http://10.0.12.51:8200","-jar","/deployments/app.jar"]
 
 
